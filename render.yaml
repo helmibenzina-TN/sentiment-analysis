@@ -12,6 +12,10 @@ services:
         generateValue: true
       - key: JWT_SECRET_KEY
         generateValue: true
+      - key: DATABASE_URI
+        fromDatabase:
+          name: sentiment-db
+          property: connectionString
     # Free tier does not support persistent disks appropriately for SQLite in long term, 
     # but for demo purpose it works ephemerally or user hooks up Postgres.
     # Here we suggest using the Postgres addon below.
@@ -26,9 +30,22 @@ services:
     envVars:
       - key: API_URL
         value: https://sentiment-backend.onrender.com
+      - key: BACKEND_HOST
+        value: sentiment-backend:10000
     plan: free
 
 databases:
   - name: sentiment-db
     plan: free
     ipAllowList: [] # Allow internal access only
+
+  # Backend Service (Web Service) linking
+  - type: web
+    name: sentiment-backend
+    # ... existing config ...
+    envVars:
+      # ... previous env vars ...
+      - key: DATABASE_URI
+        fromDatabase:
+          name: sentiment-db
+          property: connectionString

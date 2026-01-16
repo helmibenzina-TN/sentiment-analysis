@@ -16,8 +16,8 @@ FROM nginx:alpine
 # Note: Vérifiez bien le nom du dossier dans dist/ (ici 'sentiment-analysis')
 COPY --from=build-step /app/dist/sentiment-analysis/browser /usr/share/nginx/html
 
-# Copier la configuration Nginx personnalisée
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copier le template Nginx pour envsubst
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 
 # Exposer le port 80
 EXPOSE 80
