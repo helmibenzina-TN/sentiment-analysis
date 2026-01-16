@@ -1,4 +1,5 @@
 server {
+    error_log /dev/stderr debug;
     listen 80;
     server_name localhost;
 
@@ -10,18 +11,12 @@ server {
     }
 
     # Proxy vers l'API Backend
+    # Proxy vers l'API Backend
     location /api {
-        # Resolver Docker interne (nécessaire pour la résolution dynamique)
-        resolver 127.0.0.11 valid=30s;
-        
-        # Variable pour forcer la résolution DNS au moment de la requête (Lazy Resolution)
-        # Ceci évite le crash "Host not found" au démarrage si le backend n'est pas encore prêt.
-        set $upstream_endpoint http://${BACKEND_HOST};
-        
-        proxy_pass $upstream_endpoint;
+        proxy_pass http://${BACKEND_HOST};
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        # proxy_ssl_server_name on; # Pas nécessaire en interne (http)
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
     
     error_page 500 502 503 504 /50x.html;
