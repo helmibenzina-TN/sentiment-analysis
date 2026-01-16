@@ -24,7 +24,7 @@ db.init_app(app)
 bcrypt.init_app(app)
 
 # Initialize CORS and JWT
-CORS(app, resources={r"/api/*": {"origins": ["http://localhost:4200", "http://127.0.0.1:4200"]}})
+CORS(app, resources={r"/api/*": {"origins": ["http://localhost:4200", "http://127.0.0.1:4200", "https://sentiment-frontend-z0tm.onrender.com"]}})
 jwt = JWTManager(app)
 logging.info("CORS and JWT initialized")
 

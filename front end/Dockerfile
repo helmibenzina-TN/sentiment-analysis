@@ -26,4 +26,4 @@ EXPOSE 80
 # 1. Remplace uniquement ${BACKEND_URL}
 # 2. Écrit le fichier de conf final
 # 3. Lance Nginx
-CMD ["/bin/sh", "-c", "export RESOLVER=$(grep nameserver /etc/resolv.conf | head -n1 | awk '{print $2}'); echo \"Nameserver is: $RESOLVER\"; echo \"BACKEND_HOST is: $BACKEND_HOST\"; echo \"BACKEND_PROTOCOL is: $BACKEND_PROTOCOL\"; envsubst '${BACKEND_HOST} ${BACKEND_PROTOCOL} ${RESOLVER}' < /app/nginx.conf.template > /etc/nginx/conf.d/default.conf && echo \"Generated Config:\" && cat /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "echo \"BACKEND_HOST is: $BACKEND_HOST\"; envsubst '${BACKEND_HOST}' < /app/nginx.conf.template > /etc/nginx/conf.d/default.conf && echo \"Generated Config:\" && cat /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]

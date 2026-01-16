@@ -31,9 +31,7 @@ services:
       - key: API_URL
         value: https://sentiment-backend.onrender.com
       - key: BACKEND_HOST
-        value: sentiment-backend.onrender.com
-      - key: BACKEND_PROTOCOL
-        value: https
+        value: https://sentiment-backend.onrender.com
     plan: free
 
 databases:
