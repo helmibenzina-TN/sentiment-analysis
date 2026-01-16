@@ -4,7 +4,7 @@ services:
     name: sentiment-backend
     env: python
     buildCommand: "pip install -r requirements.txt && python -m nltk.downloader vader_lexicon punkt"
-    startCommand: "gunicorn app:app"
+    startCommand: "gunicorn app:app --bind 0.0.0.0:$PORT"
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.18
@@ -30,8 +30,10 @@ services:
     envVars:
       - key: API_URL
         value: https://sentiment-backend.onrender.com
-      - key: BACKEND_HOST
-        value: sentiment-backend:10000
+      - key: BACKEND_URL
+        fromService:
+          name: sentiment-backend
+          property: url
     plan: free
 
 databases:

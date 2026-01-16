@@ -11,9 +11,10 @@ server {
 
     # Proxy vers l'API Backend (nom du service docker : backend)
     location /api {
-        proxy_pass http://${BACKEND_HOST};
+        proxy_pass ${BACKEND_URL};
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
+        proxy_ssl_server_name on; # Nécessaire pour le proxy vers HTTPS
     }
     
     error_page 500 502 503 504 /50x.html;
