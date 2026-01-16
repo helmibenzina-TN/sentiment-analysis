@@ -16,10 +16,15 @@ FROM nginx:alpine
 # Note: Vérifiez bien le nom du dossier dans dist/ (ici 'sentiment-analysis')
 COPY --from=build-step /app/dist/sentiment-analysis/browser /usr/share/nginx/html
 
-# Copier le template Nginx pour envsubst
+# Copier le template Nginx
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+
+# Copier et configurer le script d'entrée personnalisé
+COPY entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 # Exposer le port 80
 EXPOSE 80
 
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
