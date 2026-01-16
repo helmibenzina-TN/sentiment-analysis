@@ -13,7 +13,7 @@ import {
   providedIn: 'root'
 })
 export class Api {
-  private readonly API_URL = 'http://localhost:5000/api';
+  private readonly API_URL = '/api';
 
   constructor(private http: HttpClient) { }
 

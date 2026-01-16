@@ -8,7 +8,7 @@ import { User, LoginResponse } from '../models/models';
   providedIn: 'root'
 })
 export class Auth {
-  private readonly API_URL = 'http://localhost:5000/api';
+  private readonly API_URL = '/api';
   private readonly TOKEN_KEY = 'access_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly USER_KEY = 'current_user';
