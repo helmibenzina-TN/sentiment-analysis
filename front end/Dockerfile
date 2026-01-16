@@ -26,4 +26,4 @@ EXPOSE 80
 # 1. Remplace uniquement ${BACKEND_URL}
 # 2. Écrit le fichier de conf final
 # 3. Lance Nginx
-CMD ["/bin/sh", "-c", "echo \"BACKEND_URL is: $BACKEND_URL\" && sed \"s|\\${BACKEND_URL}|$BACKEND_URL|g\" /app/nginx.conf.template > /etc/nginx/conf.d/default.conf && echo \"Generated Config:\" && cat /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "echo \"BACKEND_HOST is: $BACKEND_HOST\" && sed \"s|\\${BACKEND_HOST}|$BACKEND_HOST|g\" /app/nginx.conf.template > /etc/nginx/conf.d/default.conf && echo \"Generated Config:\" && cat /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]

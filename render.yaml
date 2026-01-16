@@ -30,10 +30,8 @@ services:
     envVars:
       - key: API_URL
         value: https://sentiment-backend.onrender.com
-      - key: BACKEND_URL
-        fromService:
-          name: sentiment-backend
-          property: url
+      - key: BACKEND_HOST
+        value: sentiment-backend:10000
     plan: free
 
 databases:
