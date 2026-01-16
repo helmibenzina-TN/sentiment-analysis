@@ -22,7 +22,7 @@ services:
     name: sentiment-frontend
     env: docker
     dockerContext: front end
-    dockerFilePath: front end/Dockerfile
+    dockerfilePath: front end/Dockerfile
     envVars:
       - key: API_URL
         value: https://sentiment-backend.onrender.com
