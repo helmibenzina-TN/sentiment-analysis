@@ -39,13 +39,3 @@ databases:
     plan: free
     ipAllowList: [] # Allow internal access only
 
-  # Backend Service (Web Service) linking
-  - type: web
-    name: sentiment-backend
-    # ... existing config ...
-    envVars:
-      # ... previous env vars ...
-      - key: DATABASE_URI
-        fromDatabase:
-          name: sentiment-db
-          property: connectionString
