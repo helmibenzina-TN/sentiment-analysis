@@ -1,0 +1,82 @@
+<div class="dashboard-container">
+    <div class="container">
+        <div class="dashboard-header fade-in">
+            <h1>Smartphone Sentiment Analysis</h1>
+            <p class="text-muted">Compare and analyze smartphone reviews powered by AI</p>
+        </div>
+
+        <div class="search-section fade-in">
+            <div class="card search-card">
+                <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+                    <div class="search-grid">
+                        <div class="form-group">
+                            <label class="form-label">Smartphone 1</label>
+                            <input type="text" formControlName="product1" class="form-control"
+                                placeholder="e.g., iPhone 15 Pro" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Smartphone 2 (Optional)</label>
+                            <input type="text" formControlName="product2" class="form-control"
+                                placeholder="e.g., Samsung Galaxy S24" />
+                        </div>
+                    </div>
+
+                    @if (error) {
+                    <div class="alert alert-error">{{ error }}</div>
+                    }
+
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <span>🔍</span>
+                        <span>Analyze Sentiment</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="top-section fade-in">
+            <div class="section-header">
+                <h2>🏆 Top 10 Smartphones by Sentiment</h2>
+                <p class="text-muted">Based on thousands of user reviews</p>
+            </div>
+
+            @if (topSmartphones.length > 0) {
+            <div class="smartphones-grid">
+                @for (phone of topSmartphones; track phone.product_name) {
+                <div class="phone-card" (click)="analyzePhone(phone.product_name)">
+                    <div class="phone-rank">{{ $index + 1 }}</div>
+                    <div class="phone-info">
+                        <h3 class="phone-name">{{ phone.product_name }}</h3>
+                        <div class="phone-stats">
+                            <div class="stat">
+                                <span class="stat-label">Score</span>
+                                <span class="stat-value" [class.positive]="phone.overall_score > 0"
+                                    [class.negative]="phone.overall_score < 0">
+                                    {{ phone.overall_score.toFixed(3) }}
+                                </span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Reviews</span>
+                                <span class="stat-value">{{ phone.tweets_count }}</span>
+                            </div>
+                        </div>
+                        <div class="sentiment-bar">
+                            <div class="sentiment-positive"
+                                [style.width.%]="(phone.positive_count / phone.tweets_count) * 100"></div>
+                            <div class="sentiment-neutral"
+                                [style.width.%]="(phone.neutral_count / phone.tweets_count) * 100"></div>
+                            <div class="sentiment-negative"
+                                [style.width.%]="(phone.negative_count / phone.tweets_count) * 100"></div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            } @else {
+            <div class="empty-state">
+                <p class="text-muted">No smartphones analyzed yet. Be the first to analyze!</p>
+            </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,198 @@
+<div class="results-container">
+    <div class="container">
+        @if (loading) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Analyzing sentiment...</p>
+        </div>
+        }
+
+        @if (error) {
+        <div class="alert alert-error">{{ error }}</div>
+        }
+
+        @if (product1Results && !loading) {
+        <div class="results-grid">
+            <!-- Product 1 Results -->
+            <div class="product-results fade-in">
+                <div class="card">
+                    <div class="product-header">
+                        <h2>{{ product1Name }}</h2>
+                        <div class="overall-score" [class.positive]="product1Results.overall_score > 0"
+                            [class.negative]="product1Results.overall_score < 0">
+                            {{ product1Results.overall_score.toFixed(3) }}
+                        </div>
+                    </div>
+
+                    @if (product1Results.product_image_url) {
+                    <img [src]="product1Results.product_image_url" [alt]="product1Name" class="product-image" />
+                    }
+
+                    <div class="sentiment-overview">
+                        <h3>Sentiment Distribution</h3>
+                        <div class="sentiment-bars">
+                            <div class="sentiment-item">
+                                <span class="label">Positive</span>
+                                <div class="bar-container">
+                                    <div class="bar positive"
+                                        [style.width.%]="getSentimentPercentage(product1Results, 'positive')"></div>
+                                </div>
+                                <span class="value">{{ product1Results.overall_sentiment.positive }}</span>
+                            </div>
+                            <div class="sentiment-item">
+                                <span class="label">Neutral</span>
+                                <div class="bar-container">
+                                    <div class="bar neutral"
+                                        [style.width.%]="getSentimentPercentage(product1Results, 'neutral')"></div>
+                                </div>
+                                <span class="value">{{ product1Results.overall_sentiment.neutral }}</span>
+                            </div>
+                            <div class="sentiment-item">
+                                <span class="label">Negative</span>
+                                <div class="bar-container">
+                                    <div class="bar negative"
+                                        [style.width.%]="getSentimentPercentage(product1Results, 'negative')"></div>
+                                </div>
+                                <span class="value">{{ product1Results.overall_sentiment.negative }}</span>
+                            </div>
+                        </div>
+                        <p class="text-muted">Based on {{ product1Results.tweets_count }} reviews</p>
+                    </div>
+
+                    <!-- Sentiment Pie Chart -->
+                    <div class="chart-section">
+                        <h3>Sentiment Chart</h3>
+                        <div class="chart-container">
+                            <canvas id="sentimentChart1"></canvas>
+                        </div>
+                    </div>
+
+                    @if (getAspectKeys(product1Results).length > 0) {
+                    <div class="aspects-section">
+                        <h3>Aspect Analysis</h3>
+                        <div class="aspects-grid">
+                            @for (aspect of getAspectKeys(product1Results); track aspect) {
+                            <div class="aspect-card">
+                                <h4>{{ aspect }}</h4>
+                                <div class="aspect-mini-bars">
+                                    <div class="mini-bar positive"
+                                        [style.width.%]="(product1Results.aspect_sentiments[aspect].positive / product1Results.aspect_sentiments[aspect].mentions) * 100">
+                                    </div>
+                                    <div class="mini-bar neutral"
+                                        [style.width.%]="(product1Results.aspect_sentiments[aspect].neutral / product1Results.aspect_sentiments[aspect].mentions) * 100">
+                                    </div>
+                                    <div class="mini-bar negative"
+                                        [style.width.%]="(product1Results.aspect_sentiments[aspect].negative / product1Results.aspect_sentiments[aspect].mentions) * 100">
+                                    </div>
+                                </div>
+                                <span class="mentions">{{ product1Results.aspect_sentiments[aspect].mentions }}
+                                    mentions</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    }
+
+                    @if (product1Results.word_cloud_url) {
+                    <div class="wordcloud-section">
+                        <h3>Word Cloud</h3>
+                        <img [src]="product1Results.word_cloud_url" alt="Word Cloud" class="wordcloud-image" />
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Product 2 Results (if exists) -->
+            @if (product2Results) {
+            <div class="product-results fade-in">
+                <div class="card">
+                    <div class="product-header">
+                        <h2>{{ product2Name }}</h2>
+                        <div class="overall-score" [class.positive]="product2Results.overall_score > 0"
+                            [class.negative]="product2Results.overall_score < 0">
+                            {{ product2Results.overall_score.toFixed(3) }}
+                        </div>
+                    </div>
+
+                    @if (product2Results.product_image_url) {
+                    <img [src]="product2Results.product_image_url" [alt]="product2Name" class="product-image" />
+                    }
+
+                    <div class="sentiment-overview">
+                        <h3>Sentiment Distribution</h3>
+                        <div class="sentiment-bars">
+                            <div class="sentiment-item">
+                                <span class="label">Positive</span>
+                                <div class="bar-container">
+                                    <div class="bar positive"
+                                        [style.width.%]="getSentimentPercentage(product2Results, 'positive')"></div>
+                                </div>
+                                <span class="value">{{ product2Results.overall_sentiment.positive }}</span>
+                            </div>
+                            <div class="sentiment-item">
+                                <span class="label">Neutral</span>
+                                <div class="bar-container">
+                                    <div class="bar neutral"
+                                        [style.width.%]="getSentimentPercentage(product2Results, 'neutral')"></div>
+                                </div>
+                                <span class="value">{{ product2Results.overall_sentiment.neutral }}</span>
+                            </div>
+                            <div class="sentiment-item">
+                                <span class="label">Negative</span>
+                                <div class="bar-container">
+                                    <div class="bar negative"
+                                        [style.width.%]="getSentimentPercentage(product2Results, 'negative')"></div>
+                                </div>
+                                <span class="value">{{ product2Results.overall_sentiment.negative }}</span>
+                            </div>
+                        </div>
+                        <p class="text-muted">Based on {{ product2Results.tweets_count }} reviews</p>
+                    </div>
+
+                    <!-- Sentiment Pie Chart -->
+                    <div class="chart-section">
+                        <h3>Sentiment Chart</h3>
+                        <div class="chart-container">
+                            <canvas id="sentimentChart2"></canvas>
+                        </div>
+                    </div>
+
+                    @if (getAspectKeys(product2Results).length > 0) {
+                    <div class="aspects-section">
+                        <h3>Aspect Analysis</h3>
+                        <div class="aspects-grid">
+                            @for (aspect of getAspectKeys(product2Results); track aspect) {
+                            <div class="aspect-card">
+                                <h4>{{ aspect }}</h4>
+                                <div class="aspect-mini-bars">
+                                    <div class="mini-bar positive"
+                                        [style.width.%]="(product2Results.aspect_sentiments[aspect].positive / product2Results.aspect_sentiments[aspect].mentions) * 100">
+                                    </div>
+                                    <div class="mini-bar neutral"
+                                        [style.width.%]="(product2Results.aspect_sentiments[aspect].neutral / product2Results.aspect_sentiments[aspect].mentions) * 100">
+                                    </div>
+                                    <div class="mini-bar negative"
+                                        [style.width.%]="(product2Results.aspect_sentiments[aspect].negative / product2Results.aspect_sentiments[aspect].mentions) * 100">
+                                    </div>
+                                </div>
+                                <span class="mentions">{{ product2Results.aspect_sentiments[aspect].mentions }}
+                                    mentions</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    }
+
+                    @if (product2Results.word_cloud_url) {
+                    <div class="wordcloud-section">
+                        <h3>Word Cloud</h3>
+                        <img [src]="product2Results.word_cloud_url" alt="Word Cloud" class="wordcloud-image" />
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

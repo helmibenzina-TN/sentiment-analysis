@@ -1,0 +1,77 @@
+<div class="performance-container">
+    <div class="container">
+        <div class="page-header fade-in">
+            <h1>🏆 Performance Rankings</h1>
+            <p class="text-muted">Top smartphones by category</p>
+        </div>
+
+        @if (loading) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading rankings...</p>
+        </div>
+        }
+
+        @if (!loading && performanceData) {
+        <div class="categories-tabs fade-in">
+            <button class="category-tab" [class.active]="selectedCategory === 'overall'"
+                (click)="selectCategory('overall')">
+                Overall Sentiment
+            </button>
+            <button class="category-tab" [class.active]="selectedCategory === 'performance'"
+                (click)="selectCategory('performance')">
+                Performance
+            </button>
+            <button class="category-tab" [class.active]="selectedCategory === 'battery'"
+                (click)="selectCategory('battery')">
+                Battery
+            </button>
+            <button class="category-tab" [class.active]="selectedCategory === 'camera'"
+                (click)="selectCategory('camera')">
+                Camera
+            </button>
+            <button class="category-tab" [class.active]="selectedCategory === 'value'"
+                (click)="selectCategory('value')">
+                Value
+            </button>
+        </div>
+
+        <div class="rankings-list fade-in">
+            @for (phone of getCategoryData(); track phone.product_name) {
+            <div class="ranking-item">
+                <div class="rank-number">{{ $index + 1 }}</div>
+                <div class="phone-info">
+                    <h3>{{ phone.product_name }}</h3>
+                    <div class="phone-metrics">
+                        @if (selectedCategory === 'overall') {
+                        <span class="metric">Score: <strong>{{ phone.overall_score?.toFixed(3) }}</strong></span>
+                        <span class="metric">Reviews: <strong>{{ phone.positive_count + phone.negative_count +
+                                phone.neutral_count }}</strong></span>
+                        }
+                        @if (selectedCategory === 'performance' && phone.performance_score) {
+                        <span class="metric">Performance: <strong>{{ phone.performance_score.toFixed(1)
+                                }}</strong></span>
+                        <span class="metric">Overall: <strong>{{ phone.overall_score?.toFixed(3) }}</strong></span>
+                        }
+                        @if (selectedCategory === 'battery' && phone.battery_score) {
+                        <span class="metric">Battery: <strong>{{ phone.battery_score.toFixed(1) }}</strong></span>
+                        <span class="metric">Overall: <strong>{{ phone.overall_score?.toFixed(3) }}</strong></span>
+                        }
+                        @if (selectedCategory === 'camera' && phone.camera_score) {
+                        <span class="metric">Camera: <strong>{{ phone.camera_score.toFixed(1) }}</strong></span>
+                        <span class="metric">Overall: <strong>{{ phone.overall_score?.toFixed(3) }}</strong></span>
+                        }
+                        @if (selectedCategory === 'value' && phone.value_for_money) {
+                        <span class="metric">Value: <strong>{{ phone.value_for_money.toFixed(3) }}</strong></span>
+                        @if (phone.price_usd) {
+                        <span class="metric">Price: <strong>${{ phone.price_usd }}</strong></span>
+                        }
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

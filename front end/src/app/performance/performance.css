@@ -1,0 +1,131 @@
+.performance-container {
+    min-height: calc(100vh - 60px);
+    padding: var(--spacing-xl) 0;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: var(--spacing-md);
+}
+
+.categories-tabs {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.category-tab {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-lg);
+    background: white;
+    color: var(--apple-gray-6);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.category-tab:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.category-tab.active {
+    background: var(--apple-blue);
+    color: white;
+}
+
+.rankings-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.ranking-item {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.ranking-item:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+}
+
+.rank-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--apple-gray-3);
+    min-width: 60px;
+    text-align: center;
+}
+
+.ranking-item:nth-child(1) .rank-number {
+    color: #FFD700;
+}
+
+.ranking-item:nth-child(2) .rank-number {
+    color: #C0C0C0;
+}
+
+.ranking-item:nth-child(3) .rank-number {
+    color: #CD7F32;
+}
+
+.phone-info {
+    flex: 1;
+}
+
+.phone-info h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--apple-gray-6);
+}
+
+.phone-metrics {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.metric {
+    font-size: 0.875rem;
+    color: var(--apple-gray-4);
+}
+
+.metric strong {
+    color: var(--apple-gray-6);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .categories-tabs {
+        flex-direction: column;
+    }
+
+    .category-tab {
+        width: 100%;
+    }
+}

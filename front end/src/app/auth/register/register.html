@@ -1,0 +1,75 @@
+<div class="auth-container">
+    <div class="auth-card fade-in">
+        <div class="auth-header">
+            <h1>Create Account</h1>
+            <p class="text-muted">Join us to analyze smartphone sentiment</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+            @if (error) {
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+            }
+
+            @if (success) {
+            <div class="alert alert-success">
+                Account created successfully! Redirecting to login...
+            </div>
+            }
+
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input type="text" id="username" formControlName="username" class="form-control"
+                    [class.error]="username?.invalid && username?.touched" placeholder="johndoe" />
+                @if (username?.invalid && username?.touched) {
+                <span class="error-message">Username must be at least 3 characters</span>
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" id="email" formControlName="email" class="form-control"
+                    [class.error]="email?.invalid && email?.touched" placeholder="your@email.com" />
+                @if (email?.invalid && email?.touched) {
+                <span class="error-message">Please enter a valid email</span>
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" id="password" formControlName="password" class="form-control"
+                    [class.error]="password?.invalid && password?.touched" placeholder="••••••••" />
+                @if (password?.invalid && password?.touched) {
+                <span class="error-message">Password must be at least 6 characters</span>
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control"
+                    [class.error]="confirmPassword?.invalid && confirmPassword?.touched" placeholder="••••••••" />
+                @if (registerForm.errors?.['mismatch'] && confirmPassword?.touched) {
+                <span class="error-message">Passwords do not match</span>
+                }
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg w-full"
+                [disabled]="loading || registerForm.invalid || success">
+                @if (loading) {
+                <span class="spinner-sm"></span>
+                <span>Creating account...</span>
+                } @else {
+                <span>Create Account</span>
+                }
+            </button>
+
+            <div class="auth-footer">
+                <p class="text-muted">
+                    Already have an account?
+                    <a routerLink="/login" class="link-primary">Sign in</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

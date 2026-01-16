@@ -1,0 +1,45 @@
+<div class="history-container">
+    <div class="container">
+        <div class="page-header fade-in">
+            <h1>📜 Search History</h1>
+            <p class="text-muted">Your recent smartphone analyses</p>
+        </div>
+
+        @if (loading) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading history...</p>
+        </div>
+        }
+
+        @if (!loading && history.length > 0) {
+        <div class="history-list fade-in">
+            @for (item of history; track item.id) {
+            <div class="history-item" (click)="reanalyze(item.product_name)">
+                <div class="item-content">
+                    <h3>{{ item.product_name }}</h3>
+                    <span class="item-date">{{ item.search_time | date:'medium' }}</span>
+                </div>
+                <button class="btn btn-primary btn-sm">Re-analyze</button>
+            </div>
+            }
+        </div>
+
+        <div class="pagination">
+            <button class="btn btn-secondary" [disabled]="!hasPrev" (click)="prevPage()">
+                Previous
+            </button>
+            <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+            <button class="btn btn-secondary" [disabled]="!hasNext" (click)="nextPage()">
+                Next
+            </button>
+        </div>
+        }
+
+        @if (!loading && history.length === 0) {
+        <div class="empty-state">
+            <p class="text-muted">No search history yet. Start analyzing smartphones!</p>
+        </div>
+        }
+    </div>
+</div>
