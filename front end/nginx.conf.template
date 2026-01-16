@@ -17,9 +17,10 @@ server {
         
         # Variable pour forcer la résolution DNS au moment de la requête (Lazy Resolution)
         # Ceci évite le crash "Host not found" au démarrage si le backend n'est pas encore prêt.
-        set $upstream_endpoint http://${BACKEND_HOST};
+        set $upstream_endpoint ${BACKEND_PROTOCOL}://${BACKEND_HOST};
         
         proxy_pass $upstream_endpoint;
+        proxy_ssl_server_name on;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
