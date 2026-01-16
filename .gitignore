@@ -14,3 +14,11 @@ node_modules/
 .angular/
 static/generated_images/
 static/assets/
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+rapport_resources/*.mmd
+puppeteer-config.json
+fetch_diagrams.py

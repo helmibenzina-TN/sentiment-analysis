@@ -1,0 +1,128 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+
+\geometry{hmargin=2.5cm,vmargin=2.5cm}
+
+% Configuration des liens
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+% En-tête et pied de page
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\lhead{Rapport de Stage - Analyse de Sentiments}
+
+\title{\textbf{Rapport de Stage}\\Architecture et Développement d'une Application d'Analyse de Sentiments}
+\author{Étudiant}
+\date{Janvier 2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+
+\section{Contexte}
+Le marché des smartphones est aujourd'hui saturé de références, rendant le choix difficile pour les consommateurs. Au-delà des fiches techniques, l'expérience utilisateur réelle, partagée massivement sur les réseaux sociaux comme Twitter (X), est un indicateur clé de la qualité d'un produit.
+
+\section{Objectif du Stage}
+L'objectif de ce stage a été de concevoir et développer une application web complète ("Full Stack") capable de :
+\begin{itemize}
+    \item Récupérer des avis utilisateurs (tweets).
+    \item Analyser automatiquement le sentiment (positif, négatif, neutre) de ces avis grâce au Traitement du Langage Naturel (NLP).
+    \item Restituer ces informations sous forme de tableaux de bord interactifs et comparatifs.
+\end{itemize}
+
+\chapter{Analyse des Besoins}
+
+\section{Besoins Fonctionnels}
+Le système a été conçu pour répondre aux besoins suivants :
+\begin{enumerate}
+    \item \textbf{Authentification} : Sécurisation de l'accès via inscription et connexion (JWT).
+    \item \textbf{Recherche} : Saisie d'un nom de smartphone (ex: "iPhone 15") et lancement de l'analyse.
+    \item \textbf{Visualisation} : Affichage des scores globaux et par catégorie (Batterie, Caméra, Prix).
+    \item \textbf{Comparaison} : Possibilité de comparer les métriques de deux smartphones côte à côte.
+    \item \textbf{Historique} : Sauvegarde des dernières recherches effectuées par l'utilisateur.
+\end{enumerate}
+
+\section{Besoins Non-Fonctionnels}
+\begin{itemize}
+    \item \textbf{Performance} : Utilisation d'un cache serveur pour éviter de réinterroger les API externes ou de relancer l'analyse NLP inutilement.
+    \item \textbf{Ergonomie} : Interface utilisateur fluide et responsive développée avec Angular.
+    \item \textbf{Scalabilité} : Architecture découplée (Frontend/Backend) facilitant les évolutions futures.
+\end{itemize}
+
+\section{Modélisation des Cas d'Utilisation}
+Le diagramme ci-dessous illustre les principales interactions des acteurs avec le système.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{rapport_resources/usecase.png}
+    \caption{Diagramme de Cas d'Utilisation}
+\end{figure}
+
+\chapter{Conception et Modélisation}
+
+\section{Diagramme d'Activité : Authentification}
+Le processus d'authentification est critique pour la sécurité de l'application.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{rapport_resources/activity.png}
+    \caption{Processus d'Authentification}
+\end{figure}
+
+\section{Modèle de Données (Diagramme de Classes)}
+La base de données relationnelle est structurée autour des utilisateurs, de leur historique et des scores calculés pour chaque smartphone.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{rapport_resources/class.png}
+    \caption{Diagramme de Classes}
+\end{figure}
+
+\section{Diagramme de Séquence : Analyse de Sentiment}
+Ce diagramme détaille le flux d'information lors d'une requête d'analyse par l'utilisateur.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{rapport_resources/sequence.png}
+    \caption{Séquence d'Analyse}
+\end{figure}
+
+\chapter{Architecture Technique}
+
+\section{Vue d'ensemble (Diagramme de Déploiement)}
+L'application repose sur une architecture client-serveur classique.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{rapport_resources/deployment.png}
+    \caption{Architecture de Déploiement}
+\end{figure}
+
+\section{Choix Technologiques}
+\subsection{Backend (Flask)}
+Le choix de Python et Flask s'est imposé pour sa simplicité et son excellent support des bibliothèques de Data Science (NLTK). L'API expose des endpoints RESTful consommés par le frontend.
+\subsection{Frontend (Angular)}
+Angular (version 17+) a été choisi pour sa robustesse et son typage strict (TypeScript), garantissant une meilleure maintenabilité. L'interface utilise un "Design System" moderne (Soft UI).
+
+\chapter{Conclusion}
+Ce projet a permis de mettre en œuvre une chaîne complète de développement logiciel, de la conception UML à l'implémentation Full Stack. L'application résultante est fonctionnelle et répond aux objectifs initiaux d'analyse de réputation assistée par ordinateur.
+
+\end{document}

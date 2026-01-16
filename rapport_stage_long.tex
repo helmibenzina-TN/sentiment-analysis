@@ -1,0 +1,357 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lipsum} % Pour le remplissage si nécessaire (non utilisé ici, vrai texte généré)
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\geometry{hmargin=2.5cm,vmargin=2.5cm}
+\onehalfspacing
+
+% Configuration des liens
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Rapport de Stage - Analyse de Sentiments},
+    pdfpagemode=FullScreen,
+}
+
+% En-tête et pied de page
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\lhead{Rapport de Stage - Analyse de Sentiments}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+\title{\textbf{\Huge Rapport de Stage de Fin d'Études}\\[1cm]
+\large Conception et Développement d'une Plateforme d'Analyse de Sentiments pour Smartphones avec Architecture Microservices (Simulée)}
+\author{\textbf{Nom de l'Étudiant}\\Université / École}
+\date{Janvier 2026}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    \Huge \textbf{Rapport de Stage} \par
+    \vspace{1.5cm}
+    \LARGE Analyse de Sentiments pour Produits High-Tech \par
+    \vspace{2cm}
+    \textbf{Entreprise d'accueil :} TechCorp (Simulé) \par
+    \vspace{0.5cm}
+    \textbf{Tuteur de stage :} M. Dupont \par
+    \vspace{2cm}
+    \vfill
+    \large Année Universitaire 2025-2026
+\end{titlepage}
+
+\chapter*{Remerciements}
+Je tiens tout d'abord à remercier toute l'équipe de l'entreprise TechCorp pour son accueil chaleureux et sa confiance tout au long de ce stage.
+
+Je remercie particulièrement mon tuteur de stage, M. Dupont, pour sa disponibilité, ses conseils techniques précieux et sa pédagogie qui m'ont permis de progresser significativement dans ma compréhension des architectures logicielles modernes.
+
+Je remercie également l'équipe pédagogique de mon école pour la qualité de l'enseignement dispensé, qui m'a fourni les bases théoriques nécessaires à la réussite de ce projet.
+
+Enfin, je remercie ma famille et mes proches pour leur soutien constant.
+
+\tableofcontents
+\listoffigures
+\newpage
+
+\chapter{Introduction Générale}
+
+\section{Contexte du Projet}
+L'ère numérique actuelle est caractérisée par une production massive de données, notamment sur les réseaux sociaux. Les consommateurs, avant d'effectuer un achat, consultent quasi systématiquement les avis en ligne. Pour les produits technologiques coûteux comme les smartphones, cette étape est cruciale.
+Cependant, la quantité d'informations est telle qu'il devient impossible pour un humain de tout lire et d'en faire une synthèse objective. Les fabricants, quant à eux, ont besoin de retours rapides sur leurs produits pour ajuster leur stratégie marketing ou corriger des défauts.
+
+C'est dans ce contexte que s'inscrit le projet "Sentiment Analysis". Il s'agit de développer une solution automatisée capable d'extraire, d'analyser et de visualiser l'opinion publique concernant différents modèles de smartphones en se basant sur les tweets.
+
+\section{Problématique}
+Comment transformer des milliers de messages textuels non structurés, souvent courts et remplis d'argot (tweets), en indicateurs de performance clés (KPI) exploitables pour la prise de décision ?
+Les défis sont multiples :
+\begin{itemize}
+    \item La récupération de données en temps réel ou quasi réel.
+    \item Le traitement du langage naturel (NLP) pour détecter l'ironie, le contexte et les sentiments.
+    \item La présentation des résultats de manière intuitive pour un utilisateur non technique.
+    \item La performance de l'application web qui doit rester fluide malgré la lourdeur des traitements.
+\end{itemize}
+
+\section{Objectifs du Stage}
+Mon stage avait pour objectif principal la conception et le développement "Full Stack" de cette plateforme. Les objectifs spécifiques étaient :
+\begin{enumerate}
+    \item \textbf{Concevoir l'architecture} : Définir une architecture modulaire et évolutive.
+    \item \textbf{Développer le Backend} : Créer une API RESTful robuste pour servir les données.
+    \item \textbf{Implémenter l'IA} : Intégrer des bibliothèques de NLP (NLTK) pour l'analyse de sentiments.
+    \item \textbf{Créer le Frontend} : Développer une interface utilisateur moderne avec Angular.
+    \item \textbf{Gérer le projet} : Suivre une méthodologie agile pour les livraisons.
+\end{enumerate}
+
+\chapter{Présentation de l'Entreprise et du Sujet}
+
+\section{L'Entreprise d'Accueil}
+(Section simulée) TechCorp est une entreprise spécialisée dans la veille technologique et le Big Data. Fondée en 2015, elle accompagne les grandes marques d'électronique grand public dans la compréhension de leur image de marque.
+L'équipe technique est composée de 15 développeurs, data scientists et ingénieurs DevOps. L'ambiance de travail favorise l'innovation et l'autonomie.
+
+\section{Le Sujet en Détail}
+Le projet consistait à refondre un prototype existant (développé en Flask monolithique) vers une architecture moderne séparant clairement le Frontend et le Backend.
+L'application devait permettre à un utilisateur authentifié de :
+\begin{itemize}
+    \item Rechercher n'importe quel smartphone récent (ex: "iPhone 15", "Samsung S24").
+    \item Obtenir instantanément une "météo" du produit : score sur 10, répartition Positif/Négatif/Neutre.
+    \item Voir les points forts et faibles par catégorie : Batterie, Caméra, Prix, Performance.
+    \item Comparer deux smartphones pour faciliter un choix d'achat.
+\end{itemize}
+
+\chapter{Analyse des Besoins}
+
+\section{Identification des Acteurs}
+Nous avons identifié deux acteurs principaux :
+\begin{itemize}
+    \item \textbf{L'Utilisateur Standard (Consommateur)} : Il souhaite savoir si un téléphone vaut le coup d'être acheté. Il cherche une synthèse rapide et visuelle.
+    \item \textbf{L'Analyste Marketing (Professionnel)} : Il cherche à comprendre pourquoi un produit est mal noté (problème de batterie spécifique ? prix trop élevé ?). Il a besoin de détails granulaires.
+\end{itemize}
+
+\section{Besoins Fonctionnels Détaillés}
+
+\subsection{Module d'Authentification}
+\begin{itemize}
+    \item \textbf{Inscription} : Formulaire avec Email, Nom d'utilisateur, Mot de passe (avec validation de complexité).
+    \item \textbf{Connexion} : Authentification sécurisée renvoyant un jeton JWT (JSON Web Token) valable 1 heure.
+    \item \textbf{Gestion de session} : Renouvellement automatique du token (Refresh Token) pour ne pas déconnecter l'utilisateur intempestivement.
+\end{itemize}
+
+\subsection{Module de Recherche et Analyse}
+\begin{itemize}
+    \item Barre de recherche avec autocomplétion (souhaitable).
+    \item Lancement de l'analyse asynchrone pour ne pas bloquer l'interface.
+    \item Gestion des erreurs (ex: "Aucun tweet trouvé pour ce produit").
+\end{itemize}
+
+\subsection{Module de Résultats}
+C'est le cœur de l'application. Il doit afficher :
+\begin{itemize}
+    \item Une image du produit récupérée automatiquement.
+    \item Un score global calculé par une moyenne pondérée des sentiments.
+    \item Un nuage de mots (Word Cloud) montrant les termes les plus récurrents.
+    \item Des jauges de performance pour chaque aspect (Batterie, Caméra, etc.).
+\end{itemize}
+
+\section{Besoins Non-Fonctionnels}
+\begin{itemize}
+    \item \textbf{Temps de réponse} : L'affichage des résultats doit se faire en moins de 2 secondes si l'analyse est déjà en cache.
+    \item \textbf{Sécurité} : Les mots de passe doivent être hachés (Bcrypt). L'API doit être protégée contre les injections SQL (via SQLAlchemy).
+    \item \textbf{Maintenabilité} : Le code doit être documenté et suivre les standards (PEP8 pour Python, Style Guide Angular).
+\end{itemize}
+
+\chapter{Choix Technologiques et État de l'Art}
+
+\section{Backend : Python \& Flask}
+Pour le Backend, j'ai choisi **Python** pour sa richesse en bibliothèques de Data Science.
+**Flask** a été préféré à Django pour sa légèreté. Étant donné que nous construisons une API REST pure (sans moteur de template côté serveur pour le rendu final), Flask offre une flexibilité maximale.
+Nous utilisons :
+\begin{itemize}
+    \item \textbf{Flask-RESTful} ou des Blueprints standard pour structurer les routes.
+    \item \textbf{SQLAlchemy} comme ORM pour abstraire les requêtes SQL et garantir la portabilité (SQLite en dév, PostgreSQL en prod).
+    \item \textbf{Flask-JWT-Extended} pour la gestion moderne de l'authentification sans cookies de session.
+\end{itemize}
+
+\section{Frontend : Angular}
+**Angular** (version 17) a été choisi pour le Frontend. Contrairement à React ou Vue, Angular est un framework complet "batteries included".
+Ses avantages pour ce projet :
+\begin{itemize}
+    \item \textbf{TypeScript} : Le typage fort réduit drastiquement les bugs à l'exécution.
+    \item \textbf{Architecture MVC} : Séparation claire entre la Vue (HTML), le Modèle (Interfaces TS) et le Contrôleur (Classes Components).
+    \item \textbf{RxJS} : Gestion puissante des flux de données asynchrones (requêtes API).
+\end{itemize}
+
+\section{Analyse de Sentiments : NLTK (VADER)}
+Pour l'analyse de sentiments, nous utilisons **VADER** (Valence Aware Dictionary and sEntiment Reasoner) via la bibliothèque NLTK.
+VADER est particulièrement adapté aux réseaux sociaux car :
+\begin{itemize}
+    \item Il comprend les émojis (:), :D, etc.).
+    \item Il gère les majuscules ("GREAT" est plus positif que "great").
+    \item Il comprend les amplificateurs ("very good").
+    \item Il ne nécessite pas de phase d'entraînement lourde comme un réseau de neurones profond, ce qui est idéal pour un prototype réactif.
+\end{itemize}
+
+\chapter{Conception Détaillée}
+
+\section{Architecture Globale}
+L'architecture suit le modèle REST. Le client (Angular) et le serveur (Flask) sont totalement indépendants et communiquent uniquement via JSON.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{rapport_resources/deployment.png}
+    \caption{Diagramme de Déploiement}
+\end{figure}
+
+L'application Angular est servie par un serveur Web (ou en mode dev via `ng serve`). Elle interroge l'API Flask sur le port 5000. Flask interroge la base SQLite et effectue les calculs NLP.
+
+\section{Modélisation des Données}
+Nous avons conçu un modèle de données simple mais efficace.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth, height=0.4\textheight, keepaspectratio]{rapport_resources/class.png}
+    \caption{Diagramme de Classes}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{User} : Stocke les infos de connexion.
+    \item \textbf{SearchHistory} : Une table de liaison "One-to-Many" avec User. Elle garde une trace de chaque recherche effectuée.
+    \item \textbf{SmartphoneScore} : Stocke les résultats d'analyse pour éviter de recalculer à chaque fois (mécanisme de cache persistant).
+\end{itemize}
+
+\section{Dynamique du Système}
+Le diagramme de séquence suivant montre en détail ce qui se passe quand un utilisateur clique sur "Analyser".
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{rapport_resources/sequence.png}
+    \caption{Diagramme de Séquence : Analyse}
+\end{figure}
+
+On remarque la vérification du Token JWT au début de la séquence. C'est un point de sécurité crucial. Si le token est expiré, l'API renvoie une erreur 401 et le Frontend redirige automatiquement vers la page de login.
+
+\section{Parcours Utilisateur}
+Le diagramme d'activité illustre le flux de navigation, de la connexion à la consultation des résultats.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{rapport_resources/activity.png}
+    \caption{Diagramme d'Activité}
+\end{figure}
+
+\chapter{Réalisation et Gestion de Projet (Scrum)}
+
+\section{Méthodologie Agile Scrum}
+Pour mener à bien ce projet, nous avons adopté la méthodologie \textbf{Agile Scrum}. Ce cadre de travail itératif nous a permis de livrer régulièrement des fonctionnalités fonctionnelles et de nous adapter rapidement aux changements.
+
+\subsection{Organisation des Sprints}
+Le projet a été découpé en 3 Sprints de 2 semaines :
+\begin{itemize}
+    \item \textbf{Sprint 1 (Fondations)} : Mise en place de l'environnement, conception de la base de données, et développement du module d'Authentification (Back \& Front).
+    \item \textbf{Sprint 2 (Cœur de Métier)} : Développement de l'algorithme d'analyse de sentiments (NLTK) et de l'API de recherche.
+    \item \textbf{Sprint 3 (Expérience Utilisateur)} : Intégration des graphiques, finalisation du Design System (Soft UI) et tests utilisateurs.
+\end{itemize}
+
+\subsection{Cérémonies et Artefacts}
+\begin{itemize}
+    \item \textbf{Backlog Produit} : Liste priorisée des fonctionnalités (User Stories).
+    \item \textbf{Daily Stand-up} : Réunion quotidienne de 15 min pour synchroniser l'avancement (simulée).
+    \item \textbf{Revue de Sprint} : Démonstration des fonctionnalités terminées à la fin de chaque itération.
+\end{itemize}
+
+\section{Structure du Projet}
+Le projet est organisé en monorepo contenant deux dossiers principaux :
+\begin{itemize}
+    \item \texttt{/app\_backend} : Contient tout le code Python.
+    \item \texttt{/front end} : Contient tout le code Angular.
+\end{itemize}
+
+Une telle structure facilite le développement local, bien qu'en production, ces deux parties seraient probablement déployées dans des conteneurs Docker séparés.
+
+\section{Développement Backend}
+Le fichier central est \texttt{app.py}. Il initialise l'application Flask et configure les extensions.
+Les routes sont définies dans \texttt{api.py} pour garder le code propre.
+Le développement Backend suit les principes REST. Les routes sont sécurisées et retournent des données au format JSON.
+Par exemple, la route d'analyse vérifie le token JWT avant de lancer le traitement NLP et de renvoyer les résultats.
+
+\section{Développement Frontend}
+L'application Angular utilise des composants autonomes (Standalone Components) introduits dans les versions récentes, ce qui allège le code (plus de NgModules complexes).
+Le service \texttt{ApiService} centralise tous les appels HTTP. Cela permet de changer l'URL de l'API à un seul endroit si nécessaire.
+L'interface utilise CSS Grid et Flexbox pour un positionnement réactif des cartes de résultats.
+
+\section{Gestion du Cache}
+Pour optimiser les performances, nous avons mis en place un système de cache à deux niveaux :
+\begin{enumerate}
+    \item \textbf{Cache Mémoire (Python)} : Pour les données très fréquemment demandées.
+    \item \textbf{Cache Base de Données} : La table \texttt{SmartphoneScore} agit comme un cache durable. Si un utilisateur recherche "iPhone 15", et que l'analyse a déjà été faite il y a moins de 24h, on renvoie instantanément le résultat stocké en base.
+\end{enumerate}
+
+\chapter{Tests et Validation}
+
+\section{Stratégie de Test}
+Nous avons adopté une approche de test pyramidale :
+\begin{itemize}
+    \item \textbf{Tests Unitaires (Backend)} : Test des fonctions de calcul de score (vérifier qu'un tweet positif donne bien un score > 0).
+    \item \textbf{Tests d'Intégration (API)} : Test des endpoints avec Postman pour vérifier les codes retour HTTP (200, 401, 404, 500).
+    \item \textbf{Tests E2E (Frontend)} : Navigation manuelle pour vérifier le flux complet (Inscription -> Login -> Recherche -> Logout).
+\end{itemize}
+
+\section{Scénarios de Test}
+\begin{enumerate}
+    \item \textbf{Cas nominal} : L'utilisateur recherche un téléphone connu. Le système affiche les graphes.
+    \item \textbf{Cas d'erreur} : L'utilisateur recherche "dazdzadza". Le système affiche "Aucun résultat trouvé".
+    \item \textbf{Sécurité} : Tentative d'accès à \texttt{/api/history} sans token. Le système bloque l'accès.
+\end{enumerate}
+
+\chapter{Industrialisation et Déploiement}
+
+\section{Conteneurisation avec Docker}
+Afin de garantir la portabilité de l'application et de faciliter son déploiement, nous avons conteneurisé l'ensemble des services.
+
+\subsection{Backend (Python/Flask)}
+Le backend est encapsulé dans une image Docker légère basée sur \texttt{python:3.9-slim}. Le \texttt{Dockerfile} assure l'installation des dépendances listées dans \texttt{requirements.txt} ainsi que le téléchargement des lexiques NLTK nécessaires au démarrage.
+
+\subsection{Frontend (Angular)}
+Pour le frontend, nous utilisons un build "Multi-stage" pour optimiser la taille de l'image finale :
+\begin{enumerate}
+    \item \textbf{Stage Build} : Utilise une image Node.js pour compiler l'application Angular (\texttt{npm run build}).
+    \item \textbf{Stage Run} : Utilise une image Nginx Alpine minimale pour servir les fichiers statiques (HTML/CSS/JS) générés.
+\end{enumerate}
+
+\subsection{Orchestration (Docker Compose)}
+Un fichier \texttt{docker-compose.yml} permet de lancer l'environnement complet en local avec une seule commande. Il définit les services \texttt{backend} et \texttt{frontend}, configure le réseau interne, et monte un volume persistant pour la base de données SQLite.
+
+\section{Stratégie de Déploiement Cloud}
+Pour la mise en production, nous avons opté pour une solution PaaS (Platform as a Service) moderne : **Render.com**.
+
+\subsection{Infrastructure as Code}
+L'infrastructure est définie via un fichier \texttt{render.yaml} (Blueprint) qui décrit :
+\begin{itemize}
+    \item Le service Web Python (Gunicorn comme serveur WSGI).
+    \item Le service Frontend (Dockerisé).
+    \item Une base de données PostgreSQL gérée (remplaçant SQLite pour la production).
+\end{itemize}
+
+Cette approche permet un déploiement continu (CI/CD) : chaque "push" sur la branche principale déclenche automatiquement la reconstruction et le redéploiement des conteneurs.
+
+\chapter{Bilan et Conclusion}
+
+\section{Bilan Technique}
+Ce stage m'a permis de monter en compétence sur la stack MEAN/MERN (ici remaniée en Python/Angular). J'ai appris à :
+\begin{itemize}
+    \item Structurer une application d'envergure.
+    \item Gérer l'authentification moderne (JWT).
+    \item Manipuler des données textuelles pour en extraire du sens.
+    \item Utiliser Git en équipe (simulée) pour versionner le code.
+\end{itemize}
+
+\section{Difficultés Rencontrées}
+La principale difficulté a été la gestion des quotas des API externes (Twitter/X étant devenue très restrictive). Nous avons dû contourner cela en utilisant des datasets locaux et des mocks intelligents pour la démonstration.
+L'intégration des graphiques Chart.js dans Angular a également demandé un temps d'adaptation pour gérer le cycle de vie des composants.
+
+\section{Perspectives d'Évolution}
+L'application est fonctionnelle mais peut être améliorée :
+\begin{itemize}
+    \item \textbf{Déploiement Cloud} : Mettre l'application en ligne sur AWS ou Azure.
+    \item \textbf{IA Avancée} : Entraîner un modèle BERT spécifique au domaine technologique pour affiner l'analyse de sentiments (détecter mieux l'ironie sur les bugs).
+    \item \textbf{Mobile} : Développer une version mobile native avec Ionic ou Flutter.
+\end{itemize}
+
+Ce projet a été une expérience formatrice et enrichissante, confirmant mon intérêt pour l'ingénierie logicielle et la Data Science.
+
+\listoffigures
+
+\end{document}

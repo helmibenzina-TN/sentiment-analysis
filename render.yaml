@@ -1,0 +1,34 @@
+services:
+  # Backend Service (Web Service)
+  - type: web
+    name: sentiment-backend
+    env: python
+    buildCommand: "pip install -r requirements.txt && python -m nltk.downloader vader_lexicon punkt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.18
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+    # Free tier does not support persistent disks appropriately for SQLite in long term, 
+    # but for demo purpose it works ephemerally or user hooks up Postgres.
+    # Here we suggest using the Postgres addon below.
+    plan: free
+
+  # Frontend Service (Static Site)
+  - type: web
+    name: sentiment-frontend
+    env: docker
+    dockerContext: front end
+    dockerFilePath: front end/Dockerfile
+    envVars:
+      - key: API_URL
+        value: https://sentiment-backend.onrender.com
+    plan: free
+
+databases:
+  - name: sentiment-db
+    plan: free
+    ipAllowList: [] # Allow internal access only
