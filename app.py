@@ -44,13 +44,16 @@ jwt = JWTManager(app)
 logger.info("CORS and JWT initialized")
 
 # --- Create Database Tables & Required Directories ---
-with app.app_context():
-    db.create_all()
-    # Ensure static/generated_images exists for wordclouds
-    wordcloud_dir = os.path.join(app.root_path, 'static', 'generated_images')
-    if not os.path.exists(wordcloud_dir):
-        os.makedirs(wordcloud_dir)
-        logger.info(f"Created directory: {wordcloud_dir}")
+# Commented out temporarily to debug route registration
+# with app.app_context():
+#     db.create_all()
+#     # Ensure static/generated_images exists for wordclouds
+#     wordcloud_dir = os.path.join(app.root_path, 'static', 'generated_images')
+#     if not os.path.exists(wordcloud_dir):
+#         os.makedirs(wordcloud_dir)
+#         logger.info(f"Created directory: {wordcloud_dir}")
+
+logger.info(f"App routes registered: {[str(rule) for rule in app.url_map.iter_rules()]}")
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
