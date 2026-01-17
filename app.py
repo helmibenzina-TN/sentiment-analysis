@@ -33,12 +33,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 # Register API Blueprint
-try:
-    from api import api as api_blueprint
-    app.register_blueprint(api_blueprint)
-    logger.info("API blueprint registered at /api")
-except ImportError as e:
-    logger.warning(f"Could not import API blueprint: {e}")
+from api import api as api_blueprint
+app.register_blueprint(api_blueprint)
+logger.info("API blueprint registered at /api")
 
 # --- Create Database Tables & Required Directories ---
 with app.app_context():
