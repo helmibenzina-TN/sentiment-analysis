@@ -32,10 +32,11 @@ logging.info("CORS and JWT initialized")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Register API Blueprint
+# Register API Blueprint BEFORE database initialization
+logger.info("Attempting to register API blueprint...")
 from api import api as api_blueprint
 app.register_blueprint(api_blueprint)
-logger.info("API blueprint registered at /api")
+logger.info("API blueprint registered successfully at /api")
 
 # --- Create Database Tables & Required Directories ---
 with app.app_context():
