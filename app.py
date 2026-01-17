@@ -23,20 +23,25 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
 db.init_app(app)
 bcrypt.init_app(app)
 
+# --- Configure Logging FIRST ---
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 # Initialize CORS and JWT
 CORS(app, resources={r"/api/*": {"origins": ["http://localhost:4200", "http://127.0.0.1:4200", "https://sentiment-frontend-z0tm.onrender.com"]}})
 jwt = JWTManager(app)
-logging.info("CORS and JWT initialized")
-
-# --- Configure Logging ---
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logger.info("CORS and JWT initialized")
 
 # Register API Blueprint BEFORE database initialization
 logger.info("Attempting to register API blueprint...")
 from api import api as api_blueprint
 app.register_blueprint(api_blueprint)
 logger.info("API blueprint registered successfully at /api")
+
+# Add a test route to verify app is working
+@app.route('/test')
+def test_route():
+    return {'status': 'ok', 'message': 'App is working'}, 200
 
 # --- Create Database Tables & Required Directories ---
 with app.app_context():
